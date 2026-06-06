@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جند الله - طريق الجهاد</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+:root {
+  --gold: #c9a84b;
+  --gold-light: #e8d48b;
+  --green: #2d5a27;
+  --green-dark: #1a3a15;
+  --dark: #0a0a0a;
+  --darker: #050505;
+  --text: #e0d5c0;
+  --blood: #8b1a1a;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Traditional Arabic', 'Arabic Typesetting', 'Noto Naskh Arabic', 'Amiri', serif;
+  background: var(--darker);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(45,90,39,0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(45deg, rgba(201,168,75,0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(201,168,75,0.03) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(201,168,75,0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(201,168,75,0.03) 75%);
+  background-size: 80px 80px;
+  background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
+  pointer-events: none;
+  z-index: 0;
+}
+.top-border {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gold), var(--green), var(--gold), var(--green), var(--gold));
+  z-index: 100;
+  box-shadow: 0 0 20px rgba(201,168,75,0.3);
+}
+.bottom-border {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green), var(--gold), var(--green), var(--gold), var(--green));
+  z-index: 100;
+  box-shadow: 0 0 15px rgba(45,90,39,0.3);
+}
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.header {
+  text-align: center;
+  padding: 40px 20px 30px;
+  border-bottom: 2px solid var(--gold);
+  margin-bottom: 40px;
+  position: relative;
+}
+.header::after {
+  content: '۞';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold);
+  font-size: 30px;
+  background: var(--darker);
+  padding: 0 20px;
+  animation: rubElHizbPulse 3s ease-in-out infinite;
+}
+@keyframes rubElHizbPulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(201,168,75,0.3); }
+  50% { text-shadow: 0 0 30px rgba(201,168,75,0.8), 0 0 60px rgba(201,168,75,0.3); }
+}
+.header h1 {
+  font-family: 'Amiri', serif;
+  font-size: 3.5em;
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(201,168,75,0.3), 0 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  animation: titleGlow 4s ease-in-out infinite;
+}
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 20px rgba(201,168,75,0.2), 0 2px 4px rgba(0,0,0,0.5); }
+  50% { text-shadow: 0 0 40px rgba(201,168,75,0.5), 0 0 80px rgba(201,168,75,0.2), 0 2px 4px rgba(0,0,0,0.5); }
+}
+.header .subtitle {
+  font-size: 1.3em;
+  color: var(--gold-light);
+  opacity: 0.8;
+}
+.header .bismillah {
+  font-size: 2em;
+  color: var(--gold);
+  margin: 20px 0;
+  font-family: 'Amiri', serif;
+}
+/* Volume Slider - hidden player */
+.hidden-audio {
+  display: none;
+}
+.volume-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(5,5,5,0.85);
+  border: 1px solid rgba(201,168,75,0.25);
+  border-radius: 25px;
+  padding: 8px 18px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.volume-control:hover {
+  border-color: rgba(201,168,75,0.5);
+  box-shadow: 0 0 20px rgba(201,168,75,0.1);
+}
+.volume-control .vol-icon {
+  color: var(--gold);
+  font-size: 0.9em;
+  cursor: pointer;
+  user-select: none;
+}
+.volume-control input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green), var(--gold));
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--darker);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(201,168,75,0.4);
+  transition: all 0.2s;
+}
+.volume-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(201,168,75,0.6);
+}
+.volume-control input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--darker);
+  cursor: pointer;
+}
+.volume-pct {
+  color: var(--gold-light);
+  font-size: 0.8em;
+  min-width: 35px;
+  text-align: center;
+  font-family: 'Amiri', serif;
+}
+/* Qibla-inspired compass decoration */
+.qibla-ring {
+  position: fixed;
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(201,168,75,0.05);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: qiblaRotate 60s linear infinite;
+}
+.qibla-ring::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(201,168,75,0.3);
+}
+@keyframes qiblaRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* Quran Section */
+.quran-section {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 40px 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(45,90,39,0.1));
+  border: 1px solid rgba(201,168,75,0.15);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.quran-section::before {
+  content: '۩';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  color: var(--gold);
+  background: var(--darker);
+  padding: 0 15px;
+  z-index: 2;
+}
+.quran-section::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(201,168,75,0.03), transparent, rgba(45,90,39,0.03), transparent);
+  animation: quranGlow 8s linear infinite;
+  pointer-events: none;
+}
+@keyframes quranGlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.quran-verse {
+  font-family: 'Amiri', serif;
+  font-size: 2.2em;
+  line-height: 1.8;
+  color: var(--gold-light);
+  margin-bottom: 15px;
+  text-shadow: 0 0 20px rgba(201,168,75,0.1);
+  position: relative;
+  z-index: 1;
+}
+.quran-translation {
+  font-size: 1.1em;
+  color: var(--text);
+  opacity: 0.8;
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.quran-ref {
+  display: block;
+  margin-top: 10px;
+  color: var(--gold);
+  font-size: 0.95em;
+  opacity: 0.7;
+  position: relative;
+  z-index: 1;
+}
+.section-title {
+  text-align: center;
+  font-family: 'Amiri', serif;
+  font-size: 2em;
+  color: var(--gold);
+  margin: 60px 0 30px;
+  position: relative;
+  padding-bottom: 15px;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+.card {
+  background: linear-gradient(145deg, rgba(26,26,26,0.9), rgba(10,10,10,0.9));
+  border: 1px solid rgba(201,168,75,0.15);
+  border-radius: 8px;
+  padding: 30px 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--gold));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease 0.1s;
+}
+.card:hover::before, .card:hover::after {
+  transform: scaleX(1);
+}
+.card:hover {
+  border-color: rgba(201,168,75,0.4);
+  box-shadow: 0 0 40px rgba(201,168,75,0.1), 0 8px 30px rgba(0,0,0,0.4);
+  transform: translateY(-5px);
+}
+.card-icon {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.card:hover .card-icon {
+  transform: scale(1.2);
+}
+.card h3 {
+  font-family: 'Amiri', serif;
+  color: var(--gold);
+  font-size: 1.4em;
+  margin-bottom: 12px;
+}
+.card p {
+  font-size: 0.95em;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+.martyr-section {
+  text-align: center;
+  padding: 50px 20px;
+  margin: 40px 0;
+  background: linear-gradient(135deg, rgba(139,26,26,0.08), rgba(0,0,0,0.5));
+  border: 1px solid rgba(139,26,26,0.2);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.martyr-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(139,26,26,0.05) 0%, transparent 70%);
+  animation: martyrPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes martyrPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.martyr-section h2 {
+  font-family: 'Amiri', serif;
+  font-size: 2.2em;
+  color: var(--blood);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.martyr-section p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.divider {
+  text-align: center;
+  margin: 40px 0;
+  font-size: 1.5em;
+  color: var(--gold);
+  opacity: 0.3;
+  letter-spacing: 15px;
+  animation: dividerPulse 3s ease-in-out infinite;
+}
+@keyframes dividerPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+.quote-block {
+  padding: 30px;
+  margin: 30px 0;
+  border-right: 3px solid var(--gold);
+  background: rgba(201,168,75,0.03);
+  border-radius: 0 8px 8px 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.quote-block::before {
+  content: '«';
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  font-size: 3em;
+  color: var(--gold);
+  opacity: 0.1;
+  font-family: 'Amiri', serif;
+}
+.quote-block:hover {
+  border-right-color: var(--gold-light);
+  background: rgba(201,168,75,0.06);
+  padding-right: 35px;
+}
+.quote-block p {
+  font-size: 1.15em;
+  line-height: 1.8;
+}
+.quote-block .attr {
+  display: block;
+  margin-top: 10px;
+  color: var(--gold);
+  font-size: 0.9em;
+}
+.pillars-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+.pillars-list li {
+  padding: 15px 20px;
+  margin: 8px 0;
+  background: rgba(201,168,75,0.05);
+  border: 1px solid rgba(201,168,75,0.1);
+  border-radius: 6px;
+  font-size: 1.05em;
+  line-height: 1.6;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.pillars-list li::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--gold), var(--green));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
+}
+.pillars-list li:hover::before {
+  transform: scaleY(1);
+}
+.pillars-list li:hover {
+  background: rgba(201,168,75,0.1);
+  border-color: rgba(201,168,75,0.25);
+  padding-right: 25px;
+}
+.pillars-list li strong {
+  color: var(--gold);
+}
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(201,168,75,0.15);
+  color: rgba(224,213,192,0.5);
+  font-size: 0.9em;
+}
+.footer .symbol {
+  font-size: 2em;
+  color: var(--gold);
+  margin-bottom: 15px;
+  display: block;
+  animation: symbolFloat 3s ease-in-out infinite;
+}
+@keyframes symbolFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--darker); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Islamic star decoration */
+.star-decoration {
+  position: absolute;
+  color: var(--gold);
+  opacity: 0.06;
+  font-size: 4em;
+  pointer-events: none;
+  animation: starDrift 20s linear infinite;
+}
+@keyframes starDrift {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
+  50% { transform: translateY(-30px) rotate(180deg); opacity: 0.08; }
+  100% { transform: translateY(0) rotate(360deg); opacity: 0.04; }
+}
+/* Hero Banner */
+.hero-banner {
+  text-align: center;
+  padding: 80px 20px;
+  margin: 30px 0 50px;
+  background: linear-gradient(180deg, rgba(45,90,39,0.12) 0%, rgba(10,10,10,0.6) 100%);
+  border: 1px solid rgba(201,168,75,0.15);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hero-bg-symbol {
+  position: absolute;
+  font-size: 14em;
+  color: var(--gold);
+  opacity: 0.04;
+  font-family: 'Amiri', serif;
+  top: -30px;
+  right: -30px;
+  pointer-events: none;
+  line-height: 1;
+}
+.hero-bg-symbol-2 {
+  top: auto;
+  right: auto;
+  bottom: -40px;
+  left: -20px;
+  font-size: 10em;
+  opacity: 0.025;
+}
+.hero-verse {
+  font-family: 'Amiri', serif;
+  font-size: 2.8em;
+  color: var(--gold);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(201,168,75,0.15);
+  position: relative;
+  z-index: 1;
+}
+.hero-translation {
+  color: var(--gold-light);
+  font-size: 1.1em;
+  opacity: 0.6;
+  margin-bottom: 5px;
+  position: relative;
+  z-index: 1;
+}
+.hero-ref {
+  color: var(--gold);
+  font-size: 0.85em;
+  opacity: 0.4;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+.hero-badges {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(201,168,75,0.15);
+  border-radius: 8px;
+  padding: 12px 20px;
+  background: rgba(0,0,0,0.3);
+  font-size: 0.9em;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+.hero-badge:hover {
+  border-color: rgba(201,168,75,0.4);
+  background: rgba(201,168,75,0.06);
+  transform: translateY(-2px);
+}
+.hero-badge-icon {
+  font-size: 1.2em;
+}
+/* Custom Cursor */
+body {
+  cursor: none;
+}
+a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
+  cursor: none;
+}
+.cursor-glow {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,75,0.12) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s, background 0.15s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,75,0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 15px rgba(201,168,75,0.15), inset 0 0 15px rgba(201,168,75,0.05);
+}
+.cursor-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(201,168,75,0.6);
+}
+.cursor-ring.hover {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(201,168,75,0.8);
+  background: rgba(201,168,75,0.06);
+  box-shadow: 0 0 30px rgba(201,168,75,0.25), inset 0 0 20px rgba(201,168,75,0.08);
+}
+/* Cursor trail dots */
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 2.2em; }
+  .quran-verse { font-size: 1.6em; }
+  .content-grid { grid-template-columns: 1fr; }
+  .container { padding: 15px; }
+  .volume-control input[type="range"] { width: 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-border"></div>
+<div class="bottom-border"></div>
+<div class="qibla-ring"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Hidden Audio -->
+<audio id="nasheed" autoplay loop preload="auto">
+  <source src="nasheed.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Volume Slider -->
+<div class="volume-control">
+  <span class="vol-icon" id="volIcon">🔊</span>
+  <input type="range" id="volSlider" min="5" max="100" value="70">
+  <span class="volume-pct" id="volPct">70%</span>
+</div>
+
+<div class="container">
+
+  <header class="header">
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <h1>جند الله</h1>
+    <div class="subtitle">﴿ وَجَاهِدُوا فِي اللَّهِ حَقَّ جِهَادِهِ ﴾</div>
+  </header>
+
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <div class="hero-bg-symbol">ﷲ</div>
+    <div class="hero-bg-symbol hero-bg-symbol-2">ﷲ</div>
+    <div class="hero-verse">﴿ وَجَاهِدُوا فِي اللَّهِ حَقَّ جِهَادِهِ ﴾</div>
+    <p class="hero-translation">"And strive for Allah with the striving due to Him"</p>
+    <p class="hero-ref">— سورة الحج 22:78</p>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <span class="hero-badge-icon">⚔</span>
+        <span>الجنة تحت ظلال السيوف</span>
+      </div>
+      <div class="hero-badge">
+        <span class="hero-badge-icon">🏅</span>
+        <span>الشهادة أمنية كل مؤمن</span>
+      </div>
+      <div class="hero-badge">
+        <span class="hero-badge-icon">🕌</span>
+        <span>النصر من عند الله</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quran-section fade-in">
+    <div class="quran-verse">﴿ وَقَاتِلُوا الْمُشْرِكِينَ كَافَّةً كَمَا يُقَاتِلُونَكُمْ كَافَّةً ﴾</div>
+    <p class="quran-translation">"And fight against the disbelievers collectively as they fight against you collectively"</p>
+    <span class="quran-ref">— سورة التوبة 9:36</span>
+  </div>
+
+  <div class="fade-in visible">
+    <p style="text-align:center; font-size:1.1em; line-height:1.8; margin:30px 0;">
+      الحمد لله رب العالمين، والصلاة والسلام على أشرف الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين.<br>
+      هذا الموقع دعوة إلى سبيل الله بالجهاد في سبيله، وإعلاء كلمته، ونصرة دينه.
+    </p>
+  </div>
+
+  <div class="divider">⚔ ✦ ⚔</div>
+
+  <h2 class="section-title">ما هو الجهاد؟</h2>
+  <div class="content-grid">
+    <div class="card fade-in">
+      <span class="card-icon">📖</span>
+      <h3>الجهاد في اللغة</h3>
+      <p>بذل الوسع والطاقة في قتال الكفار لنصرة دين الله، وهو ذروة سنام الإسلام وأعلى فرائضه بعد الإيمان بالله.</p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">⚔</span>
+      <h3>الجهاد في الشرع</h3>
+      <p>قتال الكفار لإعلاء كلمة الله، وهو فرض كفاية إذا قام به البعض سقط عن الباقين، وفرض عين إذا دهم العدو المسلمين.</p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">🏆</span>
+      <h3>فضل الجهاد</h3>
+      <p>قال النبي ﷺ: «رأس الأمر الإسلام، وعموده الصلاة، وذروة سنامه الجهاد». وهو أفضل الأعمال بعد الإيمان بالله.</p>
+    </div>
+  </div>
+
+  <div class="quran-section fade-in">
+    <div class="quran-verse">﴿ إِنَّ اللَّهَ اشْتَرَىٰ مِنَ الْمُؤْمِنِينَ أَنفُسَهُمْ وَأَمْوَالَهُم بِأَنَّ لَهُمُ الْجَنَّةَ ۚ يُقَاتِلُونَ فِي سَبِيلِ اللَّهِ فَيَقْتُلُونَ وَيُقْتَلُونَ ﴾</div>
+    <p class="quran-translation">"Indeed, Allah has purchased from the believers their lives and their properties in exchange for Paradise. They fight in the cause of Allah, so they kill and are killed."</p>
+    <span class="quran-ref">— سورة التوبة 9:111</span>
+  </div>
+
+  <div class="martyr-section fade-in">
+    <h2>🏅 منزلة الشهداء</h2>
+    <p>
+      قال رسول الله ﷺ:<br>
+      «لَلشَّهِيدُ عِنْدَ اللَّهِ سِتُّ خِصَالٍ: يُغْفَرُ لَهُ فِي أَوَّلِ دَفْعَةٍ، وَيَرَى مَقْعَدَهُ مِنَ الْجَنَّةِ، وَيُجَارُ مِنْ عَذَابِ الْقَبْرِ، وَيَأْمَنُ مِنَ الْفَزَعِ الْأَكْبَرِ، وَيُوضَعُ عَلَى رَأْسِهِ تَاجُ الْوَقَارِ، وَيُزَوَّجُ مِنَ الْحُورِ الْعِينِ»
+    </p>
+  </div>
+
+  <h2 class="section-title">أركان الجهاد وشروطه</h2>
+  <ul class="pillars-list fade-in">
+    <li><strong>⚔ الإخلاص لله</strong> — أن يكون القتال لإعلاء كلمة الله لا للعصبية أو المال أو السمعة</li>
+    <li><strong>📜 الإذن من ولي الأمر</strong> — الجهاد يقوم تحت راية المسلمين بإذن الإمام</li>
+    <li><strong>💪 القدرة والاستطاعة</strong> — القوة البدنية والعلم بالقتال والسلاح المناسب</li>
+    <li><strong>🎯 النية الصادقة</strong> — إرادة وجه الله والدار الآخرة</li>
+    <li><strong>🛡 الثبات عند اللقاء</strong> — الصبر في ساحة المعركة وعدم الفرار من الزحف</li>
+    <li><strong>🤝 الطاعة للقادة</strong> — السمع والطاعة لأمراء الجيش في غير معصية</li>
+  </ul>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <div class="quran-section fade-in">
+    <div class="quran-verse">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا هَلْ أَدُلُّكُمْ عَلَىٰ تِجَارَةٍ تُنجِيكُم مِّنْ عَذَابٍ أَلِيمٍ * تُؤْمِنُونَ بِاللَّهِ وَرَسُولِهِ وَتُجَاهِدُونَ فِي سَبِيلِ اللَّهِ بِأَمْوَالِكُمْ وَأَنفُسِكُمْ ﴾</div>
+    <p class="quran-translation">"O you who have believed, shall I guide you to a transaction that will save you from a painful punishment? [It is that] you believe in Allah and His Messenger and strive in the cause of Allah with your wealth and your lives."</p>
+    <span class="quran-ref">— سورة الصف 61:10-11</span>
+  </div>
+
+  <h2 class="section-title">ثمرات الجهاد</h2>
+  <div class="content-grid">
+    <div class="card fade-in">
+      <span class="card-icon">🕊</span>
+      <h3>الجنة</h3>
+      <p>قال النبي ﷺ: «إِنَّ فِي الْجَنَّةِ مِائَةَ دَرَجَةٍ أَعَدَّهَا اللَّهُ لِلْمُجَاهِدِينَ فِي سَبِيلِهِ»</p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">🛡</span>
+      <h3>العزة والتمكين</h3>
+      <p>بالجهاد يعز الله الإسلام وأهله، ويمكن لهم في الأرض، ويذل الكفر وأهله</p>
+    </div>
+    <div class="card fade-in">
+      <span class="card-icon">💰</span>
+      <h3>الغنيمة والشهادة</h3>
+      <p>إحدى الحسنيين: إما النصر والغنيمة، وإما الشهادة والجنة. كلها خير للمجاهد</p>
+    </div>
+  </div>
+
+  <div class="quote-block fade-in">
+    <p>«من مات ولم يغز، ولم يحدث نفسه بالغزو، مات على شعبة من نفاق»</p>
+    <span class="attr">— صحيح مسلم</span>
+  </div>
+
+  <div class="quote-block fade-in">
+    <p>«الجنَّة تحت ظلال السيوف»</p>
+    <span class="attr">— صحيح البخاري</span>
+  </div>
+
+  <div class="quran-section fade-in">
+    <div class="quran-verse">﴿ فَلْيُقَاتِلْ فِي سَبِيلِ اللَّهِ الَّذِينَ يَشْرُونَ الْحَيَاةَ الدُّنْيَا بِالْآخِرَةِ ۚ وَمَن يُقَاتِلْ فِي سَبِيلِ اللَّهِ فَيُقْتَلْ أَوْ يَغْلِبْ فَسَوْفَ نُؤْتِيهِ أَجْرًا عَظِيمًا ﴾</div>
+    <p class="quran-translation">"Let those who trade the life of this world for the Hereafter fight in the cause of Allah. And whoever fights in the cause of Allah and is killed or achieves victory — We will bestow upon him a great reward."</p>
+    <span class="quran-ref">— سورة النساء 4:74</span>
+  </div>
+
+  <div class="martyr-section fade-in" style="border-color:var(--gold);">
+    <h2 style="color:var(--gold);">نداء إلى المجاهدين</h2>
+    <p>
+      يا أيها المؤمنون، إن الجهاد باب من أعظم أبواب الجنة، وطريق العزة والنصر والتمكين.<br>
+      أعدوا العدة، وتسلحوا بالإيمان والتقوى، وكونوا على ثقة بأن الله ناصر دينه ومظهر كلمته.<br><br>
+      <strong style="color:var(--gold);font-size:1.3em;">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ ﴾</strong>
+    </p>
+  </div>
+
+  <div class="divider">۞ ۞ ۞</div>
+
+  <footer class="footer">
+    <span class="symbol">ﷲ</span>
+    <p>﴿ وَمَا النَّصْرُ إِلَّا مِنْ عِنْدِ اللَّهِ الْعَزِيزِ الْحَكِيمِ ﴾</p>
+    <br>
+    <p>جند الله — سبيل الجهاد في سبيله</p>
+  </footer>
+
+</div>
+
+<script>
+// ====== Custom Cursor ======
+const cursorEls = document.createElement('div');
+cursorEls.innerHTML = '<div class="cursor-glow" id="cursorGlow"></div><div class="cursor-ring" id="cursorRing"></div>';
+document.body.appendChild(cursorEls);
+const glow = document.getElementById('cursorGlow');
+const ring = document.getElementById('cursorRing');
+const trail = [];
+const TRAIL_LEN = 8;
+let cx = -100, cy = -100;
+
+for (let i = 0; i < TRAIL_LEN; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'cursor-trail';
+  document.body.appendChild(dot);
+  trail.push(dot);
+}
+let trailIdx = 0;
+
+document.addEventListener('mousemove', (e) => {
+  cx = e.clientX;
+  cy = e.clientY;
+  glow.style.left = cx + 'px';
+  glow.style.top = cy + 'px';
+  ring.style.left = cx + 'px';
+  ring.style.top = cy + 'px';
+
+  const d = trail[trailIdx];
+  d.style.left = cx + 'px';
+  d.style.top = cy + 'px';
+  d.style.opacity = '0.4';
+  trailIdx = (trailIdx + 1) % TRAIL_LEN;
+});
+
+document.addEventListener('mouseleave', () => {
+  glow.style.opacity = '0';
+  ring.style.opacity = '0';
+});
+document.addEventListener('mouseenter', () => {
+  glow.style.opacity = '1';
+  ring.style.opacity = '1';
+});
+
+setInterval(() => {
+  for (let d of trail) {
+    const o = parseFloat(d.style.opacity) || 0;
+    if (o > 0) d.style.opacity = Math.max(0, o - 0.04);
+  }
+}, 50);
+
+document.querySelectorAll('a, .card, button, .pillars-list li, .volume-control, .quote-block, .vol-icon').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+
+// ====== Optimized Particles ======
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let mouseX = -1e5, mouseY = -1e5;
+document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY + window.scrollY; });
+document.addEventListener('mouseleave', () => { mouseX = -1e5; mouseY = -1e5; });
+
+const COUNT = 55;
+const CONN_DIST_SQ = 100 * 100;
+const MOUSE_R_SQ = 70 * 70;
+let particles = [];
+
+for (let i = 0; i < COUNT; i++) {
+  particles.push({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+    s: Math.random() * 2 + 1,
+    o: Math.random() * 0.4 + 0.15,
+    c: Math.random() > 0.5 ? '201,168,75' : '45,90,39',
+    ph: Math.random() * 6.28, sp: Math.random() * 0.02 + 0.005,
+    rot: Math.random() * 6.28, rs: (Math.random() - 0.5) * 0.02,
+    shape: Math.random() < 0.2 ? 'diamond' : 'dot'
+  });
+}
+
+function anim() {
+  ctx.clearRect(0, 0, W, H);
+  const len = particles.length;
+
+  for (let i = 0; i < len; i++) {
+    const a = particles[i];
+    a.x += a.vx; a.y += a.vy;
+    a.rot += a.rs; a.ph += a.sp;
+
+    const dxm = mouseX - a.x;
+    const dym = mouseY - a.y;
+    const dm2 = dxm * dxm + dym * dym;
+    if (dm2 < MOUSE_R_SQ && dm2 > 0) {
+      const f = (MOUSE_R_SQ - dm2) / MOUSE_R_SQ;
+      a.x -= (dxm / Math.sqrt(dm2)) * f * 2;
+      a.y -= (dym / Math.sqrt(dm2)) * f * 2;
+    }
+
+    if (a.x < -30) a.x = W + 30; else if (a.x > W + 30) a.x = -30;
+    if (a.y < -30) a.y = H + 30; else if (a.y > H + 30) a.y = -30;
+
+    const po = a.o * (0.7 + 0.3 * Math.sin(a.ph));
+    const ss = a.s * (1 + 0.15 * Math.sin(a.ph));
+
+    if (a.shape === 'diamond') {
+      ctx.save();
+      ctx.translate(a.x, a.y);
+      ctx.rotate(a.rot);
+      ctx.beginPath();
+      ctx.moveTo(0, -ss);
+      ctx.lineTo(ss * 0.7, 0);
+      ctx.lineTo(0, ss);
+      ctx.lineTo(-ss * 0.7, 0);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(${a.c},${po})`;
+      ctx.fill();
+      ctx.restore();
+    } else {
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, ss, 0, 6.28);
+      ctx.fillStyle = `rgba(${a.c},${po})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < len; i++) {
+    const a = particles[i];
+    for (let j = i + 1; j < len; j += 2) {
+      const b = particles[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < CONN_DIST_SQ) {
+        const o = (1 - d2 / CONN_DIST_SQ) * 0.2;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(201,168,75,${o})`;
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(anim);
+}
+anim();
+
+// ====== Hidden Audio Engine ======
+const audio = document.getElementById('nasheed');
+const volSlider = document.getElementById('volSlider');
+const volPct = document.getElementById('volPct');
+const volIcon = document.getElementById('volIcon');
+
+audio.volume = 0.70;
+let audioStarted = false;
+
+function startAudio() {
+  if (!audioStarted) {
+    audio.play().catch(() => {});
+    audioStarted = true;
+    document.removeEventListener('click', startAudio);
+    document.removeEventListener('touchstart', startAudio);
+    document.removeEventListener('keydown', startAudio);
+  }
+}
+document.addEventListener('click', startAudio);
+document.addEventListener('touchstart', startAudio);
+document.addEventListener('keydown', startAudio);
+
+volSlider.addEventListener('input', () => {
+  const val = Math.max(5, parseInt(volSlider.value));
+  volSlider.value = val;
+  audio.volume = val / 100;
+  volPct.textContent = val + '%';
+  volIcon.textContent = val <= 5 ? '🔇' : val < 30 ? '🔈' : val < 60 ? '🔉' : '🔊';
+});
+
+volIcon.addEventListener('click', () => {
+  if (parseInt(volSlider.value) <= 5) {
+    volSlider.value = '70';
+    audio.volume = 0.70;
+    volPct.textContent = '70%';
+    volIcon.textContent = '🔊';
+  }
+});
+
+// ====== Fade In on Scroll ======
+const fadeElements = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  for (let entry of entries) {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  }
+}, { threshold: 0.1 });
+for (let el of fadeElements) observer.observe(el);
+setTimeout(() => {
+  for (let el of fadeElements) {
+    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+  }
+}, 200);
+</script>
+</body>
+</html>
