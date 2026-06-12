@@ -1118,7 +1118,7 @@ volSlider.addEventListener('input', () => {
   volSlider.value = val;
   audio.volume = val / 100;
   volPct.textContent = val + '%';
-  volIcon.textContent = val <= 5 ? '🔇' : val < 30 ? '🔈' : val < 60 ? '🔉' : '🔊';
+  volIcon.textContent = val <= 5 ? '🔈' : val < 30 ? '🔈' : val < 60 ? '🔉' : '🔊';
 });
 
 volIcon.addEventListener('click', () => {
