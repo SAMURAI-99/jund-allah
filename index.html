@@ -623,6 +623,27 @@ body::after {
   font-size: 1.2em;
 }
 /* Custom Cursor */
+.track-indicator {
+  color: var(--gold-light);
+  font-size: 0.75em;
+  min-width: 40px;
+  text-align: center;
+  font-family: 'Amiri', serif;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.vol-icon.track-btn {
+  font-size: 0.85em;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+.vol-icon.track-btn:hover {
+  transform: scale(1.25);
+  opacity: 1;
+}
+
 body {
   cursor: none;
 }
@@ -688,7 +709,17 @@ a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
   .quran-verse { font-size: 1.6em; }
   .content-grid { grid-template-columns: 1fr; }
   .container { padding: 15px; }
+  .volume-control { padding: 6px 12px; gap: 6px; }
   .volume-control input[type="range"] { width: 60px; }
+  .volume-pct { min-width: 28px; font-size: 0.7em; }
+  .track-indicator { min-width: 30px; font-size: 0.65em; }
+}
+
+@media (max-width: 420px) {
+  .volume-control { padding: 5px 8px; gap: 4px; }
+  .volume-control input[type="range"] { width: 40px; }
+  .volume-pct { display: none; }
+  .vol-icon { font-size: 0.75em; }
 }
 </style>
 </head>
@@ -700,15 +731,16 @@ a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
 <canvas id="particles-canvas"></canvas>
 
 <!-- Hidden Audio -->
-<audio id="nasheed" autoplay loop preload="auto">
-  <source src="nasheed.mp3" type="audio/mpeg">
-</audio>
+<audio id="nasheed" autoplay preload="auto"></audio>
 
-<!-- Volume Slider -->
-<div class="volume-control">
+<!-- Player Controls -->
+<div class="volume-control" id="playerControls">
+  <span class="vol-icon track-btn" id="prevTrack" title="السابق">⏮</span>
   <span class="vol-icon" id="volIcon">🔊</span>
   <input type="range" id="volSlider" min="5" max="100" value="70">
   <span class="volume-pct" id="volPct">70%</span>
+  <span class="track-indicator" id="trackIndicator">١/٣</span>
+  <span class="vol-icon track-btn" id="nextTrack" title="التالي">⏭</span>
 </div>
 
 <div class="container">
@@ -1019,17 +1051,54 @@ function anim() {
 }
 anim();
 
-// ====== Hidden Audio Engine ======
+// ====== Playlist Engine ======
 const audio = document.getElementById('nasheed');
 const volSlider = document.getElementById('volSlider');
 const volPct = document.getElementById('volPct');
 const volIcon = document.getElementById('volIcon');
+const trackIndicator = document.getElementById('trackIndicator');
+const prevBtn = document.getElementById('prevTrack');
+const nextBtn = document.getElementById('nextTrack');
 
+const playlist = [
+  'nasheeds/nasheed1.mp3',
+  'nasheeds/nasheed2.mp3',
+  'nasheeds/nasheed3.mp3'
+];
+
+const arabicNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+function toArabicNum(n) {
+  return String(n).split('').map(d => arabicNums[parseInt(d)]).join('');
+}
+
+let currentTrack = 0;
 audio.volume = 0.70;
 let audioStarted = false;
 
+function loadTrack(index) {
+  currentTrack = index;
+  audio.src = playlist[currentTrack];
+  audio.load();
+  trackIndicator.textContent = toArabicNum(currentTrack + 1) + '/' + toArabicNum(playlist.length);
+  if (audioStarted) {
+    audio.play().catch(() => {});
+  }
+}
+
+function nextTrackFn() {
+  loadTrack((currentTrack + 1) % playlist.length);
+}
+
+function prevTrackFn() {
+  loadTrack((currentTrack - 1 + playlist.length) % playlist.length);
+}
+
+// Auto-advance when a track ends
+audio.addEventListener('ended', nextTrackFn);
+
 function startAudio() {
   if (!audioStarted) {
+    loadTrack(0);
     audio.play().catch(() => {});
     audioStarted = true;
     document.removeEventListener('click', startAudio);
@@ -1040,6 +1109,9 @@ function startAudio() {
 document.addEventListener('click', startAudio);
 document.addEventListener('touchstart', startAudio);
 document.addEventListener('keydown', startAudio);
+
+nextBtn.addEventListener('click', nextTrackFn);
+prevBtn.addEventListener('click', prevTrackFn);
 
 volSlider.addEventListener('input', () => {
   const val = Math.max(5, parseInt(volSlider.value));
