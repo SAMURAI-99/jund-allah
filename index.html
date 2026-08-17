@@ -4,817 +4,988 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>جند الله - طريق الجهاد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
 :root {
-  --gold: #c9a84b;
-  --gold-light: #e8d48b;
-  --green: #2d5a27;
-  --green-dark: #1a3a15;
-  --dark: #0a0a0a;
-  --darker: #050505;
-  --text: #e0d5c0;
-  --blood: #8b1a1a;
+  --gold: #d4a943;
+  --gold-soft: #e8cd7d;
+  --gold-dim: rgba(212,169,67,0.18);
+  --gold-glow: rgba(212,169,67,0.4);
+  --bg: #06060a;
+  --bg-2: #0c0b10;
+  --panel: rgba(18,16,24,0.65);
+  --panel-solid: #121018;
+  --glass: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.06);
+  --text: #e8e1cd;
+  --text-soft: #c4b896;
+  --muted: #7a7060;
+  --red: #c0392b;
+  --red-soft: #e74c3c;
+  --red-glow: rgba(192,57,43,0.35);
+  --line: rgba(212,169,67,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="light"] {
+  --bg: #f5f0e6;
+  --bg-2: #ebe4d4;
+  --panel: rgba(255,255,255,0.7);
+  --panel-solid: #ffffff;
+  --glass: rgba(0,0,0,0.02);
+  --glass-border: rgba(0,0,0,0.08);
+  --text: #1a1612;
+  --text-soft: #3d3529;
+  --muted: #8a7e6a;
+  --line: rgba(212,169,67,0.20);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
-  font-family: 'Traditional Arabic', 'Arabic Typesetting', 'Noto Naskh Arabic', 'Amiri', serif;
-  background: var(--darker);
+  font-family: 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+  background-color: var(--bg);
   color: var(--text);
+  line-height: 1.9;
   min-height: 100vh;
   overflow-x: hidden;
+  cursor: none;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
-body::before {
-  content: '';
+::selection { background: var(--gold); color: var(--bg); }
+a, button, .card, .pillar-item, .player, .quote-box, .badge, input[type="range"], .seek-bar, .theme-toggle, .nav-link {
+  cursor: none;
+}
+
+.loader-screen {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(45,90,39,0.15) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-body::after {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image:
-    linear-gradient(45deg, rgba(201,168,75,0.03) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(201,168,75,0.03) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(201,168,75,0.03) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(201,168,75,0.03) 75%);
-  background-size: 80px 80px;
-  background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
-  pointer-events: none;
-  z-index: 0;
-}
-.top-border {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--gold), var(--green), var(--gold), var(--green), var(--gold));
-  z-index: 100;
-  box-shadow: 0 0 20px rgba(201,168,75,0.3);
-}
-.bottom-border {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--green), var(--gold), var(--green), var(--gold), var(--green));
-  z-index: 100;
-  box-shadow: 0 0 15px rgba(45,90,39,0.3);
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.header {
-  text-align: center;
-  padding: 40px 20px 30px;
-  border-bottom: 2px solid var(--gold);
-  margin-bottom: 40px;
-  position: relative;
-}
-.header::after {
-  content: '۞';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--gold);
-  font-size: 30px;
-  background: var(--darker);
-  padding: 0 20px;
-  animation: rubElHizbPulse 3s ease-in-out infinite;
-}
-@keyframes rubElHizbPulse {
-  0%, 100% { text-shadow: 0 0 10px rgba(201,168,75,0.3); }
-  50% { text-shadow: 0 0 30px rgba(201,168,75,0.8), 0 0 60px rgba(201,168,75,0.3); }
-}
-.header h1 {
-  font-family: 'Amiri', serif;
-  font-size: 3.5em;
-  color: var(--gold);
-  text-shadow: 0 0 30px rgba(201,168,75,0.3), 0 2px 4px rgba(0,0,0,0.5);
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-  animation: titleGlow 4s ease-in-out infinite;
-}
-@keyframes titleGlow {
-  0%, 100% { text-shadow: 0 0 20px rgba(201,168,75,0.2), 0 2px 4px rgba(0,0,0,0.5); }
-  50% { text-shadow: 0 0 40px rgba(201,168,75,0.5), 0 0 80px rgba(201,168,75,0.2), 0 2px 4px rgba(0,0,0,0.5); }
-}
-.header .subtitle {
-  font-size: 1.3em;
-  color: var(--gold-light);
-  opacity: 0.8;
-}
-.header .bismillah {
-  font-size: 2em;
-  color: var(--gold);
-  margin: 20px 0;
-  font-family: 'Amiri', serif;
-}
-/* Volume Slider - hidden player */
-.hidden-audio {
-  display: none;
-}
-.volume-control {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(5,5,5,0.85);
-  border: 1px solid rgba(201,168,75,0.25);
-  border-radius: 25px;
-  padding: 8px 18px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-.volume-control:hover {
-  border-color: rgba(201,168,75,0.5);
-  box-shadow: 0 0 20px rgba(201,168,75,0.1);
-}
-.volume-control .vol-icon {
-  color: var(--gold);
-  font-size: 0.9em;
-  cursor: pointer;
-  user-select: none;
-}
-.volume-control input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--green), var(--gold));
-  border-radius: 2px;
-  outline: none;
-  cursor: pointer;
-}
-.volume-control input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--darker);
-  cursor: pointer;
-  box-shadow: 0 0 8px rgba(201,168,75,0.4);
-  transition: all 0.2s;
-}
-.volume-control input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 12px rgba(201,168,75,0.6);
-}
-.volume-control input[type="range"]::-moz-range-thumb {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--darker);
-  cursor: pointer;
-}
-.volume-pct {
-  color: var(--gold-light);
-  font-size: 0.8em;
-  min-width: 35px;
-  text-align: center;
-  font-family: 'Amiri', serif;
-}
-/* Qibla-inspired compass decoration */
-.qibla-ring {
-  position: fixed;
-  top: -100px;
-  left: -100px;
-  width: 300px;
-  height: 300px;
-  border: 1px solid rgba(201,168,75,0.05);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  animation: qiblaRotate 60s linear infinite;
-}
-.qibla-ring::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 4px; height: 4px;
-  background: var(--gold);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(201,168,75,0.3);
-}
-@keyframes qiblaRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-/* Quran Section */
-.quran-section {
-  text-align: center;
-  padding: 40px 20px;
-  margin: 40px 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(45,90,39,0.1));
-  border: 1px solid rgba(201,168,75,0.15);
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-}
-.quran-section::before {
-  content: '۩';
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36px;
-  color: var(--gold);
-  background: var(--darker);
-  padding: 0 15px;
-  z-index: 2;
-}
-.quran-section::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(201,168,75,0.03), transparent, rgba(45,90,39,0.03), transparent);
-  animation: quranGlow 8s linear infinite;
-  pointer-events: none;
-}
-@keyframes quranGlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.quran-verse {
-  font-family: 'Amiri', serif;
-  font-size: 2.2em;
-  line-height: 1.8;
-  color: var(--gold-light);
-  margin-bottom: 15px;
-  text-shadow: 0 0 20px rgba(201,168,75,0.1);
-  position: relative;
-  z-index: 1;
-}
-.quran-translation {
-  font-size: 1.1em;
-  color: var(--text);
-  opacity: 0.8;
-  line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-.quran-ref {
-  display: block;
-  margin-top: 10px;
-  color: var(--gold);
-  font-size: 0.95em;
-  opacity: 0.7;
-  position: relative;
-  z-index: 1;
-}
-.section-title {
-  text-align: center;
-  font-family: 'Amiri', serif;
-  font-size: 2em;
-  color: var(--gold);
-  margin: 60px 0 30px;
-  position: relative;
-  padding-bottom: 15px;
-}
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.content-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  margin: 30px 0;
-}
-.card {
-  background: linear-gradient(145deg, rgba(26,26,26,0.9), rgba(10,10,10,0.9));
-  border: 1px solid rgba(201,168,75,0.15);
-  border-radius: 8px;
-  padding: 30px 25px;
-  text-align: center;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--green));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-.card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; right: 0;
-  width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--green), var(--gold));
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s ease 0.1s;
-}
-.card:hover::before, .card:hover::after {
-  transform: scaleX(1);
-}
-.card:hover {
-  border-color: rgba(201,168,75,0.4);
-  box-shadow: 0 0 40px rgba(201,168,75,0.1), 0 8px 30px rgba(0,0,0,0.4);
-  transform: translateY(-5px);
-}
-.card-icon {
-  font-size: 2.5em;
-  margin-bottom: 15px;
-  display: block;
-  transition: transform 0.3s ease;
-}
-.card:hover .card-icon {
-  transform: scale(1.2);
-}
-.card h3 {
-  font-family: 'Amiri', serif;
-  color: var(--gold);
-  font-size: 1.4em;
-  margin-bottom: 12px;
-}
-.card p {
-  font-size: 0.95em;
-  line-height: 1.7;
-  opacity: 0.85;
-}
-.martyr-section {
-  text-align: center;
-  padding: 50px 20px;
-  margin: 40px 0;
-  background: linear-gradient(135deg, rgba(139,26,26,0.08), rgba(0,0,0,0.5));
-  border: 1px solid rgba(139,26,26,0.2);
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-}
-.martyr-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: radial-gradient(ellipse at center, rgba(139,26,26,0.05) 0%, transparent 70%);
-  animation: martyrPulse 4s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes martyrPulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-.martyr-section h2 {
-  font-family: 'Amiri', serif;
-  font-size: 2.2em;
-  color: var(--blood);
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
-}
-.martyr-section p {
-  font-size: 1.1em;
-  line-height: 1.8;
-  max-width: 700px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-.divider {
-  text-align: center;
-  margin: 40px 0;
-  font-size: 1.5em;
-  color: var(--gold);
-  opacity: 0.3;
-  letter-spacing: 15px;
-  animation: dividerPulse 3s ease-in-out infinite;
-}
-@keyframes dividerPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
-}
-.quote-block {
-  padding: 30px;
-  margin: 30px 0;
-  border-right: 3px solid var(--gold);
-  background: rgba(201,168,75,0.03);
-  border-radius: 0 8px 8px 0;
-  transition: all 0.3s ease;
-  position: relative;
-}
-.quote-block::before {
-  content: '«';
-  position: absolute;
-  top: -10px;
-  right: 15px;
-  font-size: 3em;
-  color: var(--gold);
-  opacity: 0.1;
-  font-family: 'Amiri', serif;
-}
-.quote-block:hover {
-  border-right-color: var(--gold-light);
-  background: rgba(201,168,75,0.06);
-  padding-right: 35px;
-}
-.quote-block p {
-  font-size: 1.15em;
-  line-height: 1.8;
-}
-.quote-block .attr {
-  display: block;
-  margin-top: 10px;
-  color: var(--gold);
-  font-size: 0.9em;
-}
-.pillars-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-}
-.pillars-list li {
-  padding: 15px 20px;
-  margin: 8px 0;
-  background: rgba(201,168,75,0.05);
-  border: 1px solid rgba(201,168,75,0.1);
-  border-radius: 6px;
-  font-size: 1.05em;
-  line-height: 1.6;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.pillars-list li::before {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--gold), var(--green));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.3s ease;
-}
-.pillars-list li:hover::before {
-  transform: scaleY(1);
-}
-.pillars-list li:hover {
-  background: rgba(201,168,75,0.1);
-  border-color: rgba(201,168,75,0.25);
-  padding-right: 25px;
-}
-.pillars-list li strong {
-  color: var(--gold);
-}
-.footer {
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 60px;
-  border-top: 1px solid rgba(201,168,75,0.15);
-  color: rgba(224,213,192,0.5);
-  font-size: 0.9em;
-}
-.footer .symbol {
-  font-size: 2em;
-  color: var(--gold);
-  margin-bottom: 15px;
-  display: block;
-  animation: symbolFloat 3s ease-in-out infinite;
-}
-@keyframes symbolFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--darker); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease;
-}
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-/* Islamic star decoration */
-.star-decoration {
-  position: absolute;
-  color: var(--gold);
-  opacity: 0.06;
-  font-size: 4em;
-  pointer-events: none;
-  animation: starDrift 20s linear infinite;
-}
-@keyframes starDrift {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
-  50% { transform: translateY(-30px) rotate(180deg); opacity: 0.08; }
-  100% { transform: translateY(0) rotate(360deg); opacity: 0.04; }
-}
-/* Hero Banner */
-.hero-banner {
-  text-align: center;
-  padding: 80px 20px;
-  margin: 30px 0 50px;
-  background: linear-gradient(180deg, rgba(45,90,39,0.12) 0%, rgba(10,10,10,0.6) 100%);
-  border: 1px solid rgba(201,168,75,0.15);
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  min-height: 300px;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
 }
-.hero-bg-symbol {
-  position: absolute;
-  font-size: 14em;
-  color: var(--gold);
-  opacity: 0.04;
-  font-family: 'Amiri', serif;
-  top: -30px;
-  right: -30px;
+.loader-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  line-height: 1;
 }
-.hero-bg-symbol-2 {
-  top: auto;
-  right: auto;
-  bottom: -40px;
-  left: -20px;
-  font-size: 10em;
-  opacity: 0.025;
-}
-.hero-verse {
-  font-family: 'Amiri', serif;
-  font-size: 2.8em;
+.loader-symbol {
+  font-size: 4em;
   color: var(--gold);
-  line-height: 1.6;
-  margin-bottom: 10px;
-  text-shadow: 0 0 40px rgba(201,168,75,0.15);
-  position: relative;
-  z-index: 1;
+  animation: loaderPulse 1.2s ease-in-out infinite;
+  text-shadow: 0 0 40px var(--gold-glow);
+  margin-bottom: 24px;
 }
-.hero-translation {
-  color: var(--gold-light);
-  font-size: 1.1em;
-  opacity: 0.6;
-  margin-bottom: 5px;
-  position: relative;
-  z-index: 1;
+@keyframes loaderPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.15); opacity: 1; }
 }
-.hero-ref {
-  color: var(--gold);
-  font-size: 0.85em;
-  opacity: 0.4;
-  margin-bottom: 30px;
-  position: relative;
-  z-index: 1;
+.loader-bar-track {
+  width: 200px;
+  height: 3px;
+  background: var(--line);
+  border-radius: 3px;
+  overflow: hidden;
 }
-.hero-badges {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  border-radius: 3px;
+  transition: width 0.3s ease;
 }
-.hero-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(201,168,75,0.15);
-  border-radius: 8px;
-  padding: 12px 20px;
-  background: rgba(0,0,0,0.3);
+.loader-text {
+  margin-top: 16px;
+  color: var(--muted);
   font-size: 0.9em;
-  color: var(--text);
-  transition: all 0.3s ease;
-}
-.hero-badge:hover {
-  border-color: rgba(201,168,75,0.4);
-  background: rgba(201,168,75,0.06);
-  transform: translateY(-2px);
-}
-.hero-badge-icon {
-  font-size: 1.2em;
-}
-/* Custom Cursor */
-.track-indicator {
-  color: var(--gold-light);
-  font-size: 0.75em;
-  min-width: 40px;
-  text-align: center;
   font-family: 'Amiri', serif;
-  letter-spacing: 1px;
-  opacity: 0.8;
 }
 
-.vol-icon.track-btn {
-  font-size: 0.85em;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  opacity: 0.7;
-}
-
-.vol-icon.track-btn:hover {
-  transform: scale(1.25);
-  opacity: 1;
-}
-
-body {
-  cursor: none;
-}
-a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
-  cursor: none;
-}
-.cursor-glow {
+.cursor-orb {
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  width: 120px;
-  height: 120px;
+  width: 8px; height: 8px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,75,0.12) 0%, transparent 70%);
+  background: var(--gold);
   transform: translate(-50%, -50%);
-  transition: width 0.15s, height 0.15s, background 0.15s;
-  mix-blend-mode: screen;
+  box-shadow: 0 0 16px var(--gold-glow), 0 0 40px rgba(212,169,67,0.15);
+  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
 }
 .cursor-ring {
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid rgba(201,168,75,0.5);
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  box-shadow: 0 0 15px rgba(201,168,75,0.15), inset 0 0 15px rgba(201,168,75,0.05);
-}
-.cursor-ring::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 4px; height: 4px;
-  background: var(--gold);
+  z-index: 9998;
+  width: 42px; height: 42px;
+  border: 1.5px solid rgba(212,169,67,0.4);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 8px rgba(201,168,75,0.6);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s ease,
+              background 0.3s ease,
+              border-width 0.3s ease;
 }
 .cursor-ring.hover {
-  width: 60px;
-  height: 60px;
-  border-color: rgba(201,168,75,0.8);
-  background: rgba(201,168,75,0.06);
-  box-shadow: 0 0 30px rgba(201,168,75,0.25), inset 0 0 20px rgba(201,168,75,0.08);
+  width: 64px; height: 64px;
+  border-color: var(--gold);
+  border-width: 2px;
+  background: rgba(212,169,67,0.06);
 }
-/* Cursor trail dots */
 .cursor-trail {
   position: fixed;
   pointer-events: none;
-  z-index: 9998;
-  width: 4px;
+  z-index: 9997;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(212,169,67,0.5);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft), var(--gold));
+  box-shadow: 0 0 12px var(--gold-glow);
+  z-index: 500;
+  transition: width 0.1s linear;
+}
+
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,169,67,0.06), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(192,57,43,0.04), transparent 40%),
+    radial-gradient(ellipse at 20% 100%, rgba(212,169,67,0.04), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(6,6,10,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  transform: translateY(-100%);
+  transition: transform 0.4s ease, background 0.5s ease;
+}
+.top-nav.visible {
+  transform: translateY(0);
+}
+[data-theme="light"] .top-nav {
+  background: rgba(245,240,230,0.8);
+}
+.nav-brand {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 1.3em;
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-brand span {
+  font-size: 1.1em;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.nav-link {
+  color: var(--text-soft);
+  text-decoration: none;
+  font-size: 0.9em;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  transition: color var(--transition);
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width var(--transition);
+}
+.nav-link:hover { color: var(--gold); }
+.nav-link:hover::after { width: 100%; }
+.theme-toggle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--gold);
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+.theme-toggle:hover {
+  border-color: var(--gold);
+  background: rgba(212,169,67,0.1);
+  box-shadow: 0 0 20px rgba(212,169,67,0.15);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 20px 120px;
+}
+
+.site-header {
+  position: relative;
+  text-align: center;
+  padding: 120px 10px 40px;
+  overflow: hidden;
+}
+.header-bg-symbol {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(14em, 45vw, 24em);
+  color: var(--gold);
+  opacity: 0.03;
+  pointer-events: none;
+  animation: bgSpin 120s linear infinite;
+  line-height: 1;
+}
+@keyframes bgSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.header-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--gold);
+  margin-bottom: 28px;
+  font-size: 1em;
+  opacity: 0.8;
+}
+.header-ornament::before, .header-ornament::after {
+  content: "";
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+.bismillah {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.4em, 4vw, 1.9em);
+  color: var(--gold-soft);
+  margin-bottom: 24px;
+  text-shadow: 0 0 30px rgba(212,169,67,0.15);
+  opacity: 0.9;
+}
+.site-header h1 {
+  font-family: 'Aref Ruqaa', 'Amiri', serif;
+  font-size: clamp(3.2em, 10vw, 5.5em);
+  color: var(--gold);
+  line-height: 1.2;
+  text-shadow: 0 0 50px rgba(212,169,67,0.3), 0 4px 8px rgba(0,0,0,0.5);
+  animation: titleBreath 6s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+@keyframes titleBreath {
+  0%, 100% { text-shadow: 0 0 30px rgba(212,169,67,0.2), 0 4px 8px rgba(0,0,0,0.5); filter: brightness(1); }
+  50% { text-shadow: 0 0 60px rgba(212,169,67,0.45), 0 0 120px rgba(212,169,67,0.12), 0 4px 8px rgba(0,0,0,0.5); filter: brightness(1.05); }
+}
+.subtitle {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.1em, 3.5vw, 1.4em);
+  color: var(--gold-soft);
+  opacity: 0.75;
+}
+
+.glass-frame {
+  position: relative;
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.glass-frame::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,169,67,0.3), transparent);
+}
+
+.hero {
+  text-align: center;
+  padding: 56px 30px;
+  margin: 40px 0 50px;
+}
+.hero-verse {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.5em, 4.5vw, 2.3em);
+  line-height: 1.9;
+  color: var(--gold-soft);
+  text-shadow: 0 0 30px rgba(212,169,67,0.1);
+}
+.hero-ref {
+  color: var(--muted);
+  font-size: 0.92em;
+  margin-top: 16px;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+.badge {
+  border: 1px solid var(--gold-dim);
+  background: rgba(212,169,67,0.04);
+  backdrop-filter: blur(8px);
+  padding: 10px 22px;
+  border-radius: 40px;
+  font-size: 0.9em;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  transition: all var(--transition);
+  color: var(--text);
+}
+.badge:hover {
+  border-color: var(--gold);
+  color: var(--gold-soft);
+  box-shadow: 0 0 24px rgba(212,169,67,0.15);
+  transform: translateY(-3px);
+  background: rgba(212,169,67,0.08);
+}
+
+.verse-box {
+  position: relative;
+  text-align: center;
+  padding: 48px 30px;
+  margin: 48px 0;
+}
+.verse-decor {
+  position: absolute;
+  top: -16px; left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold);
+  font-size: 1.5em;
+  background: var(--bg);
+  padding: 0 16px;
+  text-shadow: 0 0 20px var(--gold-glow);
+  z-index: 2;
+}
+[data-theme="light"] .verse-decor { background: var(--bg); }
+.verse-text {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.35em, 4.2vw, 2em);
+  line-height: 2;
+  color: var(--gold-soft);
+  text-shadow: 0 0 20px rgba(212,169,67,0.08);
+}
+.verse-ref {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9em;
+  margin-top: 16px;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-family: 'Aref Ruqaa', serif;
+  font-size: clamp(1.6em, 4.5vw, 2.2em);
+  font-weight: 400;
+  color: var(--gold);
+  margin: 60px 0 32px;
+  text-shadow: 0 0 28px rgba(212,169,67,0.18);
+}
+.section-title::before, .section-title::after {
+  content: "";
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+.section-title::after {
+  background: linear-gradient(90deg, var(--gold-dim), transparent);
+}
+
+.intro {
+  text-align: center;
+  font-size: 1.1em;
+  line-height: 2.2;
+  margin: 36px 0;
+  color: var(--text-soft);
+}
+
+.divider {
+  text-align: center;
+  margin: 52px 0;
+  color: var(--gold);
+  opacity: 0.45;
+  letter-spacing: 14px;
+  font-size: 1.1em;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+}
+.card {
+  position: relative;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 40px 24px 36px;
+  text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212,169,67,0.2);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 30px rgba(212,169,67,0.08);
+}
+.card:hover::before { opacity: 1; }
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  background: radial-gradient(circle, rgba(212,169,67,0.1), transparent 70%);
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover .card-icon {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 0 30px rgba(212,169,67,0.15);
+}
+.card h3 {
+  font-family: 'Aref Ruqaa', serif;
+  color: var(--gold);
+  font-size: 1.4em;
+  margin-bottom: 14px;
+  text-shadow: 0 0 16px rgba(212,169,67,0.15);
+}
+.card p {
+  font-size: 0.95em;
+  line-height: 2;
+  color: var(--text-soft);
+}
+
+.martyr-section {
+  position: relative;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(192,57,43,0.08), rgba(6,6,10,0.6));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: var(--radius);
+  padding: 52px 30px;
+  margin: 50px 0;
+  overflow: hidden;
+}
+.martyr-section::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(192,57,43,0.1);
+  border-radius: calc(var(--radius) - 4px);
+  pointer-events: none;
+}
+.martyr-section::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+.martyr-section h2 {
+  font-family: 'Aref Ruqaa', serif;
+  font-weight: 400;
+  color: var(--red-soft);
+  font-size: clamp(1.5em, 4.5vw, 2.1em);
+  margin-bottom: 22px;
+  text-shadow: 0 0 30px var(--red-glow);
+}
+.martyr-section p {
+  max-width: 740px;
+  margin: 0 auto;
+  font-size: 1.05em;
+  line-height: 2.2;
+}
+.martyr-section.gold-variant {
+  background: linear-gradient(180deg, rgba(212,169,67,0.06), rgba(6,6,10,0.6));
+  border-color: rgba(212,169,67,0.2);
+}
+.martyr-section.gold-variant::before { border-color: rgba(212,169,67,0.1); }
+.martyr-section.gold-variant::after {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.martyr-section.gold-variant h2 {
+  color: var(--gold);
+  text-shadow: 0 0 30px var(--gold-glow);
+}
+.martyr-section.gold-variant strong {
+  color: var(--gold);
+  font-size: 1.25em;
+  text-shadow: 0 0 20px rgba(212,169,67,0.2);
+}
+
+.pillars-list {
+  list-style: none;
+  margin: 32px 0;
+}
+.pillar-item {
+  display: flex;
+  align-items: flex-start;
+  background: var(--panel);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-right: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 18px 20px;
+  margin: 10px 0;
+  font-size: 1.02em;
+  line-height: 2;
+  transition: all var(--transition);
+}
+.pillar-item:hover {
+  background: rgba(212,169,67,0.08);
+  border-color: rgba(212,169,67,0.2);
+  transform: translateX(-4px);
+}
+.pillar-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-size: 0.9em;
+  margin-left: 16px;
+  margin-top: 2px;
+  background: rgba(212,169,67,0.06);
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+.pillar-item strong { color: var(--gold); }
+
+.quote-box {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  border-right: 3px solid var(--gold);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 28px 26px;
+  margin: 28px 0;
+  transition: all var(--transition);
+}
+.quote-box::before {
+  content: "«";
+  position: absolute;
+  top: 2px; right: 16px;
+  font-size: 3.5em;
+  color: var(--gold);
+  opacity: 0.08;
+  font-family: 'Amiri', serif;
+  line-height: 1;
+}
+.quote-box:hover {
+  border-color: rgba(212,169,67,0.2);
+  box-shadow: 0 0 28px rgba(212,169,67,0.06);
+}
+.quote-box p {
+  font-family: 'Amiri', serif;
+  font-size: 1.15em;
+  line-height: 2;
+  position: relative;
+}
+.quote-box .attr {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.88em;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.show {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+.site-footer {
+  text-align: center;
+  padding: 60px 20px 36px;
+  border-top: 1px solid var(--line);
+  margin-top: 64px;
+  color: var(--muted);
+  font-size: 0.95em;
+  position: relative;
+}
+.footer-symbol {
+  font-size: 3em;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 18px;
+  text-shadow: 0 0 36px var(--gold-glow);
+}
+.site-footer p { margin: 8px 0; }
+
+.player {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(6,6,10,0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+  padding: 12px 20px;
+  z-index: 100;
+}
+[data-theme="light"] .player {
+  background: rgba(245,240,230,0.92);
+}
+.player::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.player-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.player-btn {
+  background: rgba(212,169,67,0.06);
+  border: 1px solid rgba(212,169,67,0.15);
+  color: var(--gold);
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  line-height: 1;
+  padding: 0;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-btn:hover {
+  border-color: var(--gold);
+  background: rgba(212,169,67,0.12);
+  box-shadow: 0 0 18px rgba(212,169,67,0.18);
+  transform: scale(1.05);
+}
+.player-btn.play-main {
+  width: 44px; height: 44px;
+  font-size: 1em;
+  border-color: var(--gold);
+  border-radius: 50%;
+}
+.seek-bar {
+  flex: 1;
+  min-width: 80px;
+  height: 5px;
+  background: rgba(212,169,67,0.1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.seek-fill {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  box-shadow: 0 0 10px rgba(212,169,67,0.4);
+  transition: width 0.15s linear;
+}
+.time-display {
+  color: var(--muted);
+  font-size: 0.78em;
+  min-width: 42px;
+  text-align: center;
+  font-family: 'Amiri', serif;
+  direction: ltr;
+}
+.vol-icon {
+  color: var(--gold);
+  font-size: 0.9em;
+  user-select: none;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 90px;
   height: 4px;
+  background: rgba(212,169,67,0.12);
+  border-radius: 3px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
   border-radius: 50%;
   background: var(--gold);
+  border: none;
+  box-shadow: 0 0 12px rgba(212,169,67,0.5);
+  cursor: none;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+}
+.vol-pct {
+  color: var(--muted);
+  font-size: 0.78em;
+  min-width: 34px;
+  text-align: center;
+  font-family: 'Amiri', serif;
+  direction: ltr;
+}
+.track-indicator {
+  color: var(--gold-soft);
+  font-size: 0.78em;
+  min-width: 36px;
+  text-align: center;
+  font-family: 'Amiri', serif;
+  direction: ltr;
+}
+.track-name {
+  color: var(--text-soft);
+  font-size: 0.82em;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 90px;
+  left: 24px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: var(--gold);
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transform: translateY(20px);
+  transition: all var(--transition);
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  border-color: var(--gold);
+  background: rgba(212,169,67,0.1);
+  box-shadow: 0 0 24px rgba(212,169,67,0.2);
 }
 
 @media (max-width: 768px) {
-  .header h1 { font-size: 2.2em; }
-  .quran-verse { font-size: 1.6em; }
-  .content-grid { grid-template-columns: 1fr; }
-  .container { padding: 15px; }
-  .volume-control { padding: 6px 12px; gap: 6px; }
-  .volume-control input[type="range"] { width: 60px; }
-  .volume-pct { min-width: 28px; font-size: 0.7em; }
-  .track-indicator { min-width: 30px; font-size: 0.65em; }
+  .container { padding: 14px 14px 120px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .player-inner { gap: 8px; flex-wrap: wrap; }
+  input[type="range"] { width: 60px; }
+  .seek-bar { min-width: 60px; }
+  .nav-links { gap: 12px; }
+  .nav-link { font-size: 0.8em; }
+  .track-name { display: none; }
 }
-
-@media (max-width: 420px) {
-  .volume-control { padding: 5px 8px; gap: 4px; }
-  .volume-control input[type="range"] { width: 40px; }
-  .volume-pct { display: none; }
-  .vol-icon { font-size: 0.75em; }
+@media (max-width: 480px) {
+  input[type="range"] { width: 44px; }
+  .vol-pct { display: none; }
+  .time-display { min-width: 34px; font-size: 0.72em; }
+  .player-btn { width: 34px; height: 34px; }
+  .player-btn.play-main { width: 40px; height: 40px; }
+  .site-header h1 { font-size: clamp(2.4em, 12vw, 3.5em); }
 }
 </style>
 </head>
 <body>
 
-<div class="top-border"></div>
-<div class="bottom-border"></div>
-<div class="qibla-ring"></div>
-<canvas id="particles-canvas"></canvas>
-
-<!-- Hidden Audio -->
-<audio id="nasheed" autoplay preload="auto"></audio>
-
-<!-- Player Controls -->
-<div class="volume-control" id="playerControls">
-  <span class="vol-icon track-btn" id="prevTrack" title="السابق">⏮</span>
-  <span class="vol-icon" id="volIcon">🔊</span>
-  <input type="range" id="volSlider" min="5" max="100" value="70">
-  <span class="volume-pct" id="volPct">70%</span>
-  <span class="track-indicator" id="trackIndicator">١/٣</span>
-  <span class="vol-icon track-btn" id="nextTrack" title="التالي">⏭</span>
+<div class="loader-screen" id="loader">
+  <div class="loader-symbol">۞</div>
+  <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderFill"></div></div>
+  <div class="loader-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 </div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="cursor-orb" id="cursorOrb"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="top-nav" id="topNav">
+  <a href="#" class="nav-brand"><span>۞</span> جند الله</a>
+  <div class="nav-links">
+    <a href="#jihad-def" class="nav-link">الجهاد</a>
+    <a href="#pillars" class="nav-link">الأركان</a>
+    <a href="#fruits" class="nav-link">الثمرات</a>
+    <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">🌙</button>
+  </div>
+</nav>
+
+<button class="back-to-top" id="backToTop" title="العودة للأعلى">↑</button>
+
+<div class="player">
+  <div class="player-inner">
+    <button class="player-btn" id="prevBtn" title="السابق" type="button">⏮</button>
+    <button class="player-btn play-main" id="playBtn" type="button">▶</button>
+    <button class="player-btn" id="nextBtn" title="التالي" type="button">⏭</button>
+    <div class="seek-bar" id="seekBar"><div class="seek-fill" id="seekFill"></div></div>
+    <span class="time-display" id="timeCur">0:00</span>
+    <span class="vol-icon" id="volIcon">🔊</span>
+    <input type="range" id="volSlider" min="5" max="100" value="70">
+    <span class="vol-pct" id="volPct">70%</span>
+    <span class="track-indicator" id="trackInd">1/3</span>
+    <span class="track-name" id="trackName">—</span>
+  </div>
+</div>
+
+<audio id="nasheed" preload="auto"></audio>
 
 <div class="container">
 
-  <header class="header">
-    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-    <h1>جند الله</h1>
-    <div class="subtitle">﴿ وَجَاهِدُوا فِي اللَّهِ حَقَّ جِهَادِهِ ﴾</div>
+    <header class="site-header">
+    <div class="header-bg-symbol">۞</div>
+    <div class="header-ornament reveal">✦</div>
+    <div class="bismillah reveal">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <h1 class="reveal">جند الله</h1>
+    <div class="subtitle reveal">﴿ وَجَاهِدُوا فِي اللَّهِ حَقَّ جِهَادِهِ ﴾</div>
   </header>
 
-  <!-- Hero Banner -->
-  <div class="hero-banner">
-    <div class="hero-bg-symbol">ﷲ</div>
-    <div class="hero-bg-symbol hero-bg-symbol-2">ﷲ</div>
+    <section class="hero glass-frame reveal">
     <div class="hero-verse">﴿ وَجَاهِدُوا فِي اللَّهِ حَقَّ جِهَادِهِ ﴾</div>
-    <p class="hero-translation">"And strive for Allah with the striving due to Him"</p>
     <p class="hero-ref">— سورة الحج 22:78</p>
     <div class="hero-badges">
-      <div class="hero-badge">
-        <span class="hero-badge-icon">⚔</span>
-        <span>الجنة تحت ظلال السيوف</span>
-      </div>
-      <div class="hero-badge">
-        <span class="hero-badge-icon">🏅</span>
-        <span>الشهادة أمنية كل مؤمن</span>
-      </div>
-      <div class="hero-badge">
-        <span class="hero-badge-icon">🕌</span>
-        <span>النصر من عند الله</span>
-      </div>
+      <span class="badge">⚔ الجنة تحت ظلال السيوف</span>
+      <span class="badge">🏅 الشهادة أمنية كل مؤمن</span>
+      <span class="badge">🕌 النصر من عند الله</span>
     </div>
+  </section>
+
+    <div class="verse-box glass-frame reveal">
+    <span class="verse-decor">۞</span>
+    <div class="verse-text">﴿ وَقَاتِلُوا الْمُشْرِكِينَ كَافَّةً كَمَا يُقَاتِلُونَكُمْ كَافَّةً ﴾</div>
+    <span class="verse-ref">— سورة التوبة 9:36</span>
   </div>
 
-  <div class="quran-section fade-in">
-    <div class="quran-verse">﴿ وَقَاتِلُوا الْمُشْرِكِينَ كَافَّةً كَمَا يُقَاتِلُونَكُمْ كَافَّةً ﴾</div>
-    <p class="quran-translation">"And fight against the disbelievers collectively as they fight against you collectively"</p>
-    <span class="quran-ref">— سورة التوبة 9:36</span>
-  </div>
-
-  <div class="fade-in visible">
-    <p style="text-align:center; font-size:1.1em; line-height:1.8; margin:30px 0;">
-      الحمد لله رب العالمين، والصلاة والسلام على أشرف الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين.<br>
-      هذا الموقع دعوة إلى سبيل الله بالجهاد في سبيله، وإعلاء كلمته، ونصرة دينه.
-    </p>
-  </div>
+    <p class="intro reveal">
+    الحمد لله رب العالمين، والصلاة والسلام على أشرف الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين.<br>
+    هذا الموقع دعوة إلى سبيل الله بالجهاد في سبيله، وإعلاء كلمته، ونصرة دينه.
+  </p>
 
   <div class="divider">⚔ ✦ ⚔</div>
 
-  <h2 class="section-title">ما هو الجهاد؟</h2>
-  <div class="content-grid">
-    <div class="card fade-in">
-      <span class="card-icon">📖</span>
+    <h2 class="section-title" id="jihad-def"><span>ما هو الجهاد؟</span></h2>
+  <div class="cards-grid">
+    <div class="card reveal">
+      <div class="card-icon">📖</div>
       <h3>الجهاد في اللغة</h3>
       <p>بذل الوسع والطاقة في قتال الكفار لنصرة دين الله، وهو ذروة سنام الإسلام وأعلى فرائضه بعد الإيمان بالله.</p>
     </div>
-    <div class="card fade-in">
-      <span class="card-icon">⚔</span>
+    <div class="card reveal reveal-delay-1">
+      <div class="card-icon">⚔</div>
       <h3>الجهاد في الشرع</h3>
       <p>قتال الكفار لإعلاء كلمة الله، وهو فرض كفاية إذا قام به البعض سقط عن الباقين، وفرض عين إذا دهم العدو المسلمين.</p>
     </div>
-    <div class="card fade-in">
-      <span class="card-icon">🏆</span>
+    <div class="card reveal reveal-delay-2">
+      <div class="card-icon">🏆</div>
       <h3>فضل الجهاد</h3>
       <p>قال النبي ﷺ: «رأس الأمر الإسلام، وعموده الصلاة، وذروة سنامه الجهاد». وهو أفضل الأعمال بعد الإيمان بالله.</p>
     </div>
   </div>
 
-  <div class="quran-section fade-in">
-    <div class="quran-verse">﴿ إِنَّ اللَّهَ اشْتَرَىٰ مِنَ الْمُؤْمِنِينَ أَنفُسَهُمْ وَأَمْوَالَهُم بِأَنَّ لَهُمُ الْجَنَّةَ ۚ يُقَاتِلُونَ فِي سَبِيلِ اللَّهِ فَيَقْتُلُونَ وَيُقْتَلُونَ ﴾</div>
-    <p class="quran-translation">"Indeed, Allah has purchased from the believers their lives and their properties in exchange for Paradise. They fight in the cause of Allah, so they kill and are killed."</p>
-    <span class="quran-ref">— سورة التوبة 9:111</span>
+    <div class="verse-box glass-frame reveal">
+    <span class="verse-decor">۞</span>
+    <div class="verse-text">﴿ إِنَّ اللَّهَ اشْتَرَىٰ مِنَ الْمُؤْمِنِينَ أَنفُسَهُمْ وَأَمْوَالَهُم بِأَنَّ لَهُمُ الْجَنَّةَ ۚ يُقَاتِلُونَ فِي سَبِيلِ اللَّهِ فَيَقْتُلُونَ وَيُقْتَلُونَ ﴾</div>
+    <span class="verse-ref">— سورة التوبة 9:111</span>
   </div>
 
-  <div class="martyr-section fade-in">
+    <div class="martyr-section reveal">
     <h2>🏅 منزلة الشهداء</h2>
     <p>
       قال رسول الله ﷺ:<br>
@@ -822,72 +993,71 @@ a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
     </p>
   </div>
 
-  <h2 class="section-title">أركان الجهاد وشروطه</h2>
-  <ul class="pillars-list fade-in">
-    <li><strong>⚔ الإخلاص لله</strong> — أن يكون القتال لإعلاء كلمة الله لا للعصبية أو المال أو السمعة</li>
-    <li><strong>📜 الإذن من ولي الأمر</strong> — الجهاد يقوم تحت راية المسلمين بإذن الإمام</li>
-    <li><strong>💪 القدرة والاستطاعة</strong> — القوة البدنية والعلم بالقتال والسلاح المناسب</li>
-    <li><strong>🎯 النية الصادقة</strong> — إرادة وجه الله والدار الآخرة</li>
-    <li><strong>🛡 الثبات عند اللقاء</strong> — الصبر في ساحة المعركة وعدم الفرار من الزحف</li>
-    <li><strong>🤝 الطاعة للقادة</strong> — السمع والطاعة لأمراء الجيش في غير معصية</li>
+    <h2 class="section-title" id="pillars"><span>أركان الجهاد وشروطه</span></h2>
+  <ul class="pillars-list">
+    <li class="pillar-item reveal"><span class="pillar-num">١</span><strong>⚔ الإخلاص لله</strong> — أن يكون القتال لإعلاء كلمة الله لا للعصبية أو المال أو السمعة</li>
+    <li class="pillar-item reveal"><span class="pillar-num">٢</span><strong>📜 الإذن من ولي الأمر</strong> — الجهاد يقوم تحت راية المسلمين بإذن الإمام</li>
+    <li class="pillar-item reveal"><span class="pillar-num">٣</span><strong>💪 القدرة والاستطاعة</strong> — القوة البدنية والعلم بالقتال والسلاح المناسب</li>
+    <li class="pillar-item reveal"><span class="pillar-num">٤</span><strong>🎯 النية الصادقة</strong> — إرادة وجه الله والدار الآخرة</li>
+    <li class="pillar-item reveal"><span class="pillar-num">٥</span><strong>🛡 الثبات عند اللقاء</strong> — الصبر في ساحة المعركة وعدم الفرار من الزحف</li>
+    <li class="pillar-item reveal"><span class="pillar-num">٦</span><strong>🤝 الطاعة للقادة</strong> — السمع والطاعة لأمراء الجيش في غير معصية</li>
   </ul>
 
   <div class="divider">✦ ✦ ✦</div>
 
-  <div class="quran-section fade-in">
-    <div class="quran-verse">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا هَلْ أَدُلُّكُمْ عَلَىٰ تِجَارَةٍ تُنجِيكُم مِّنْ عَذَابٍ أَلِيمٍ * تُؤْمِنُونَ بِاللَّهِ وَرَسُولِهِ وَتُجَاهِدُونَ فِي سَبِيلِ اللَّهِ بِأَمْوَالِكُمْ وَأَنفُسِكُمْ ﴾</div>
-    <p class="quran-translation">"O you who have believed, shall I guide you to a transaction that will save you from a painful punishment? [It is that] you believe in Allah and His Messenger and strive in the cause of Allah with your wealth and your lives."</p>
-    <span class="quran-ref">— سورة الصف 61:10-11</span>
+    <div class="verse-box glass-frame reveal">
+    <span class="verse-decor">۞</span>
+    <div class="verse-text">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا هَلْ أَدُلُّكُمْ عَلَىٰ تِجَارَةٍ تُنجِيكُم مِّنْ عَذَابٍ أَلِيمٍ * تُؤْمِنُونَ بِاللَّهِ وَرَسُولِهِ وَتُجَاهِدُونَ فِي سَبِيلِ اللَّهِ بِأَمْوَالِكُمْ وَأَنفُسِكُمْ ﴾</div>
+    <span class="verse-ref">— سورة الصف 61:10-11</span>
   </div>
 
-  <h2 class="section-title">ثمرات الجهاد</h2>
-  <div class="content-grid">
-    <div class="card fade-in">
-      <span class="card-icon">🕊</span>
+    <h2 class="section-title" id="fruits"><span>ثمرات الجهاد</span></h2>
+  <div class="cards-grid">
+    <div class="card reveal">
+      <div class="card-icon">🕊</div>
       <h3>الجنة</h3>
       <p>قال النبي ﷺ: «إِنَّ فِي الْجَنَّةِ مِائَةَ دَرَجَةٍ أَعَدَّهَا اللَّهُ لِلْمُجَاهِدِينَ فِي سَبِيلِهِ»</p>
     </div>
-    <div class="card fade-in">
-      <span class="card-icon">🛡</span>
+    <div class="card reveal reveal-delay-1">
+      <div class="card-icon">🛡</div>
       <h3>العزة والتمكين</h3>
       <p>بالجهاد يعز الله الإسلام وأهله، ويمكن لهم في الأرض، ويذل الكفر وأهله</p>
     </div>
-    <div class="card fade-in">
-      <span class="card-icon">💰</span>
+    <div class="card reveal reveal-delay-2">
+      <div class="card-icon">💰</div>
       <h3>الغنيمة والشهادة</h3>
       <p>إحدى الحسنيين: إما النصر والغنيمة، وإما الشهادة والجنة. كلها خير للمجاهد</p>
     </div>
   </div>
 
-  <div class="quote-block fade-in">
+    <div class="quote-box reveal">
     <p>«من مات ولم يغز، ولم يحدث نفسه بالغزو، مات على شعبة من نفاق»</p>
     <span class="attr">— صحيح مسلم</span>
   </div>
-
-  <div class="quote-block fade-in">
+  <div class="quote-box reveal">
     <p>«الجنَّة تحت ظلال السيوف»</p>
     <span class="attr">— صحيح البخاري</span>
   </div>
 
-  <div class="quran-section fade-in">
-    <div class="quran-verse">﴿ فَلْيُقَاتِلْ فِي سَبِيلِ اللَّهِ الَّذِينَ يَشْرُونَ الْحَيَاةَ الدُّنْيَا بِالْآخِرَةِ ۚ وَمَن يُقَاتِلْ فِي سَبِيلِ اللَّهِ فَيُقْتَلْ أَوْ يَغْلِبْ فَسَوْفَ نُؤْتِيهِ أَجْرًا عَظِيمًا ﴾</div>
-    <p class="quran-translation">"Let those who trade the life of this world for the Hereafter fight in the cause of Allah. And whoever fights in the cause of Allah and is killed or achieves victory — We will bestow upon him a great reward."</p>
-    <span class="quran-ref">— سورة النساء 4:74</span>
+    <div class="verse-box glass-frame reveal">
+    <span class="verse-decor">۞</span>
+    <div class="verse-text">﴿ فَلْيُقَاتِلْ فِي سَبِيلِ اللَّهِ الَّذِينَ يَشْرُونَ الْحَيَاةَ الدُّنْيَا بِالْآخِرَةِ ۚ وَمَن يُقَاتِلْ فِي سَبِيلِ اللَّهِ فَيُقْتَلْ أَوْ يَغْلِبْ فَسَوْفَ نُؤْتِيهِ أَجْرًا عَظِيمًا ﴾</div>
+    <span class="verse-ref">— سورة النساء 4:74</span>
   </div>
 
-  <div class="martyr-section fade-in" style="border-color:var(--gold);">
-    <h2 style="color:var(--gold);">نداء إلى المجاهدين</h2>
+    <div class="martyr-section gold-variant reveal">
+    <h2>نداء إلى المجاهدين</h2>
     <p>
       يا أيها المؤمنون، إن الجهاد باب من أعظم أبواب الجنة، وطريق العزة والنصر والتمكين.<br>
       أعدوا العدة، وتسلحوا بالإيمان والتقوى، وكونوا على ثقة بأن الله ناصر دينه ومظهر كلمته.<br><br>
-      <strong style="color:var(--gold);font-size:1.3em;">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ ﴾</strong>
+      <strong>﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا اصْبِرُوا وَصَابِرُوا وَرَابِطُوا وَاتَّقُوا اللَّهَ لَعَلَّكُمْ تُفْلِحُونَ ﴾</strong>
     </p>
   </div>
 
   <div class="divider">۞ ۞ ۞</div>
 
-  <footer class="footer">
-    <span class="symbol">ﷲ</span>
+    <footer class="site-footer">
+    <span class="footer-symbol">ﷲ</span>
     <p>﴿ وَمَا النَّصْرُ إِلَّا مِنْ عِنْدِ اللَّهِ الْعَزِيزِ الْحَكِيمِ ﴾</p>
     <br>
     <p>جند الله — سبيل الجهاد في سبيله</p>
@@ -895,234 +1065,270 @@ a, button, .card, .pillars-list li, .volume-control, .quote-block, .vol-icon {
 
 </div>
 
-<script>
-// ====== Custom Cursor ======
-const cursorEls = document.createElement('div');
-cursorEls.innerHTML = '<div class="cursor-glow" id="cursorGlow"></div><div class="cursor-ring" id="cursorRing"></div>';
-document.body.appendChild(cursorEls);
-const glow = document.getElementById('cursorGlow');
+<script>const loader = document.getElementById('loader');
+const loaderFill = document.getElementById('loaderFill');
+let loadProgress = 0;
+const loadInterval = setInterval(() => {
+  loadProgress += Math.random() * 18 + 5;
+  if (loadProgress >= 100) {
+    loadProgress = 100;
+    loaderFill.style.width = '100%';
+    clearInterval(loadInterval);
+    setTimeout(() => loader.classList.add('hidden'), 400);
+  } else {
+    loaderFill.style.width = loadProgress + '%';
+  }
+}, 200);
+const orb = document.getElementById('cursorOrb');
 const ring = document.getElementById('cursorRing');
-const trail = [];
-const TRAIL_LEN = 8;
-let cx = -100, cy = -100;
+let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
+let ringX = mouseX, ringY = mouseY;
+const trailDots = [];
+const TRAIL_COUNT = 5;
 
-for (let i = 0; i < TRAIL_LEN; i++) {
+for (let i = 0; i < TRAIL_COUNT; i++) {
   const dot = document.createElement('div');
   dot.className = 'cursor-trail';
   document.body.appendChild(dot);
-  trail.push(dot);
+  trailDots.push({ el: dot, x: mouseX, y: mouseY });
 }
-let trailIdx = 0;
 
-document.addEventListener('mousemove', (e) => {
-  cx = e.clientX;
-  cy = e.clientY;
-  glow.style.left = cx + 'px';
-  glow.style.top = cy + 'px';
-  ring.style.left = cx + 'px';
-  ring.style.top = cy + 'px';
-
-  const d = trail[trailIdx];
-  d.style.left = cx + 'px';
-  d.style.top = cy + 'px';
-  d.style.opacity = '0.4';
-  trailIdx = (trailIdx + 1) % TRAIL_LEN;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  orb.style.left = mouseX + 'px';
+  orb.style.top = mouseY + 'px';
 });
 
-document.addEventListener('mouseleave', () => {
-  glow.style.opacity = '0';
-  ring.style.opacity = '0';
-});
-document.addEventListener('mouseenter', () => {
-  glow.style.opacity = '1';
-  ring.style.opacity = '1';
-});
+function animateCursor() {
+ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
 
-setInterval(() => {
-  for (let d of trail) {
-    const o = parseFloat(d.style.opacity) || 0;
-    if (o > 0) d.style.opacity = Math.max(0, o - 0.04);
+let prevX = mouseX, prevY = mouseY;
+  for (const t of trailDots) {
+    t.x += (prevX - t.x) * 0.25;
+    t.y += (prevY - t.y) * 0.25;
+    t.el.style.left = t.x + 'px';
+    t.el.style.top = t.y + 'px';
+    t.el.style.opacity = '0.3';
+    prevX = t.x;
+    prevY = t.y;
   }
-}, 50);
 
-document.querySelectorAll('a, .card, button, .pillars-list li, .volume-control, .quote-block, .vol-icon').forEach(el => {
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+const hoverTargets = document.querySelectorAll('a, button, .card, .pillar-item, .quote-box, .badge, .player, input[type="range"], .seek-bar, .theme-toggle, .nav-link');
+hoverTargets.forEach(el => {
   el.addEventListener('mouseenter', () => ring.classList.add('hover'));
   el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
 });
-
-// ====== Optimized Particles ======
-const canvas = document.getElementById('particles-canvas');
+const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
-
-let W, H;
+let CW, CH;
 function resizeCanvas() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+  CW = canvas.width = window.innerWidth;
+  CH = canvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-let mouseX = -1e5, mouseY = -1e5;
-document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY + window.scrollY; });
-document.addEventListener('mouseleave', () => { mouseX = -1e5; mouseY = -1e5; });
-
-const COUNT = 55;
-const CONN_DIST_SQ = 100 * 100;
-const MOUSE_R_SQ = 70 * 70;
-let particles = [];
-
-for (let i = 0; i < COUNT; i++) {
+const PARTICLE_COUNT = 55;
+const particles = [];
+for (let i = 0; i < PARTICLE_COUNT; i++) {
   particles.push({
-    x: Math.random() * W, y: Math.random() * H,
-    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-    s: Math.random() * 2 + 1,
-    o: Math.random() * 0.4 + 0.15,
-    c: Math.random() > 0.5 ? '201,168,75' : '45,90,39',
-    ph: Math.random() * 6.28, sp: Math.random() * 0.02 + 0.005,
-    rot: Math.random() * 6.28, rs: (Math.random() - 0.5) * 0.02,
-    shape: Math.random() < 0.2 ? 'diamond' : 'dot'
+    x: Math.random() * CW,
+    y: Math.random() * CH,
+    r: Math.random() * 2 + 0.5,
+    vy: -(Math.random() * 0.4 + 0.15),
+    sway: Math.random() * Math.PI * 2,
+    swaySpeed: Math.random() * 0.015 + 0.004,
+    twinkle: Math.random() * Math.PI * 2,
+    twinkleSpeed: Math.random() * 0.03 + 0.015,
+    alpha: Math.random() * 0.4 + 0.08,
+    color: Math.random() > 0.8 ? '232,205,125' : '212,169,67',
+    type: Math.random() < 0.1 ? 'diamond' : 'circle'
   });
 }
 
-function anim() {
-  ctx.clearRect(0, 0, W, H);
-  const len = particles.length;
+function drawParticles() {
+  ctx.clearRect(0, 0, CW, CH);
+  for (const p of particles) {
+    p.y += p.vy;
+    p.x += Math.sin(p.sway) * 0.35;
+    p.sway += p.swaySpeed;
+    p.twinkle += p.twinkleSpeed;
+    if (p.y < -20) { p.y = CH + 20; p.x = Math.random() * CW; }
+    if (p.x < -20) p.x = CW + 20;
+    if (p.x > CW + 20) p.x = -20;
 
-  for (let i = 0; i < len; i++) {
-    const a = particles[i];
-    a.x += a.vx; a.y += a.vy;
-    a.rot += a.rs; a.ph += a.sp;
-
-    const dxm = mouseX - a.x;
-    const dym = mouseY - a.y;
-    const dm2 = dxm * dxm + dym * dym;
-    if (dm2 < MOUSE_R_SQ && dm2 > 0) {
-      const f = (MOUSE_R_SQ - dm2) / MOUSE_R_SQ;
-      a.x -= (dxm / Math.sqrt(dm2)) * f * 2;
-      a.y -= (dym / Math.sqrt(dm2)) * f * 2;
-    }
-
-    if (a.x < -30) a.x = W + 30; else if (a.x > W + 30) a.x = -30;
-    if (a.y < -30) a.y = H + 30; else if (a.y > H + 30) a.y = -30;
-
-    const po = a.o * (0.7 + 0.3 * Math.sin(a.ph));
-    const ss = a.s * (1 + 0.15 * Math.sin(a.ph));
-
-    if (a.shape === 'diamond') {
+    const a = p.alpha * (0.5 + 0.5 * Math.sin(p.twinkle));
+    if (p.type === 'diamond') {
       ctx.save();
-      ctx.translate(a.x, a.y);
-      ctx.rotate(a.rot);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.twinkle * 0.3);
       ctx.beginPath();
-      ctx.moveTo(0, -ss);
-      ctx.lineTo(ss * 0.7, 0);
-      ctx.lineTo(0, ss);
-      ctx.lineTo(-ss * 0.7, 0);
+      ctx.moveTo(0, -p.r * 2);
+      ctx.lineTo(p.r * 1.3, 0);
+      ctx.lineTo(0, p.r * 2);
+      ctx.lineTo(-p.r * 1.3, 0);
       ctx.closePath();
-      ctx.fillStyle = `rgba(${a.c},${po})`;
+      ctx.fillStyle = `rgba(${p.color},${a})`;
       ctx.fill();
       ctx.restore();
     } else {
       ctx.beginPath();
-      ctx.arc(a.x, a.y, ss, 0, 6.28);
-      ctx.fillStyle = `rgba(${a.c},${po})`;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.color},${a})`;
       ctx.fill();
     }
   }
-
-  for (let i = 0; i < len; i++) {
-    const a = particles[i];
-    for (let j = i + 1; j < len; j += 2) {
-      const b = particles[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const d2 = dx * dx + dy * dy;
-      if (d2 < CONN_DIST_SQ) {
-        const o = (1 - d2 / CONN_DIST_SQ) * 0.2;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(201,168,75,${o})`;
-        ctx.lineWidth = 0.4;
-        ctx.stroke();
-      }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progressBar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+}, { passive: true });
+const topNav = document.getElementById('topNav');
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  if (scrollY > 300) {
+    topNav.classList.add('visible');
+    backToTop.classList.add('visible');
+  } else {
+    topNav.classList.remove('visible');
+    backToTop.classList.remove('visible');
+  }
+}, { passive: true });
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+const themeToggle = document.getElementById('themeToggle');
+let isDark = true;
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'light');
+  themeToggle.textContent = isDark ? '🌙' : '☀️';
+});
+const revealObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      revealObserver.unobserve(entry.target);
     }
   }
-
-  requestAnimationFrame(anim);
-}
-anim();
-
-// ====== Playlist Engine ======
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 const audio = document.getElementById('nasheed');
+const playBtn = document.getElementById('playBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const seekBar = document.getElementById('seekBar');
+const seekFill = document.getElementById('seekFill');
+const timeCur = document.getElementById('timeCur');
 const volSlider = document.getElementById('volSlider');
 const volPct = document.getElementById('volPct');
 const volIcon = document.getElementById('volIcon');
-const trackIndicator = document.getElementById('trackIndicator');
-const prevBtn = document.getElementById('prevTrack');
-const nextBtn = document.getElementById('nextTrack');
+const trackInd = document.getElementById('trackInd');
+const trackNameEl = document.getElementById('trackName');
 
 const playlist = [
   'nasheeds/nasheed1.mp3',
   'nasheeds/nasheed2.mp3',
   'nasheeds/nasheed3.mp3'
 ];
+const trackNames = ['سلكتُ طريقي', 'إنتفض أو مت إذا شئت شهيد', 'نشيد دعانا المنادي لساح الجهادي'];
 
-const arabicNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+let current = 0;
+let started = false;
+audio.volume = 0.70;
+
 function toArabicNum(n) {
-  return String(n).split('').map(d => arabicNums[parseInt(d)]).join('');
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(d => arabicDigits[parseInt(d, 10)] || d).join('');
 }
 
-let currentTrack = 0;
-audio.volume = 0.70;
-let audioStarted = false;
+function fmtTime(s) {
+  if (!isFinite(s) || s < 0) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = String(Math.floor(s % 60)).padStart(2, '0');
+  return m + ':' + sec;
+}
+
+function updateIndicator() {
+  trackInd.textContent = toArabicNum(current + 1) + '/' + toArabicNum(playlist.length);
+  trackNameEl.textContent = trackNames[current] || '—';
+}
 
 function loadTrack(index) {
-  currentTrack = index;
-  audio.src = playlist[currentTrack];
+  current = (index + playlist.length) % playlist.length;
+  audio.src = playlist[current];
   audio.load();
-  trackIndicator.textContent = toArabicNum(currentTrack + 1) + '/' + toArabicNum(playlist.length);
-  if (audioStarted) {
-    audio.play().catch(() => {});
+  seekFill.style.width = '0%';
+  timeCur.textContent = '0:00';
+  updateIndicator();
+  if (started) audio.play().catch(() => {});
+}
+
+function syncIcon() {
+  playBtn.textContent = audio.paused ? '▶' : '⏸';
+}
+
+playBtn.addEventListener('click', () => {
+  if (!started) {
+    loadTrack(0);
+    started = true;
   }
-}
+  if (audio.paused) {
+    audio.play().catch(() => {});
+  } else {
+    audio.pause();
+  }
+});
 
-function nextTrackFn() {
-  loadTrack((currentTrack + 1) % playlist.length);
-}
+prevBtn.addEventListener('click', () => loadTrack(current - 1));
+nextBtn.addEventListener('click', () => loadTrack(current + 1));
+audio.addEventListener('ended', () => loadTrack(current + 1));
+audio.addEventListener('play', syncIcon);
+audio.addEventListener('pause', syncIcon);
 
-function prevTrackFn() {
-  loadTrack((currentTrack - 1 + playlist.length) % playlist.length);
-}
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) {
+    seekFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+  }
+  timeCur.textContent = fmtTime(audio.currentTime);
+});
 
-// Auto-advance when a track ends
-audio.addEventListener('ended', nextTrackFn);
+seekBar.addEventListener('click', e => {
+  if (!started || !audio.duration) return;
+  const rect = seekBar.getBoundingClientRect();
+  const ratio = Math.min(1, Math.max(0, (rect.right - e.clientX) / rect.width));
+  audio.currentTime = ratio * audio.duration;
+});
 
 function startAudio() {
-  if (!audioStarted) {
+  if (!started) {
     loadTrack(0);
+    started = true;
     audio.play().catch(() => {});
-    audioStarted = true;
-    document.removeEventListener('click', startAudio);
-    document.removeEventListener('touchstart', startAudio);
-    document.removeEventListener('keydown', startAudio);
   }
 }
-document.addEventListener('click', startAudio);
-document.addEventListener('touchstart', startAudio);
-document.addEventListener('keydown', startAudio);
-
-nextBtn.addEventListener('click', nextTrackFn);
-prevBtn.addEventListener('click', prevTrackFn);
+document.addEventListener('click', startAudio, { once: true });
+document.addEventListener('touchstart', startAudio, { once: true });
+document.addEventListener('keydown', startAudio, { once: true });
 
 volSlider.addEventListener('input', () => {
-  const val = Math.max(5, parseInt(volSlider.value));
+  const val = Math.max(5, parseInt(volSlider.value, 10));
   volSlider.value = val;
   audio.volume = val / 100;
   volPct.textContent = val + '%';
-  volIcon.textContent = val <= 5 ? '🔈' : val < 30 ? '🔈' : val < 60 ? '🔉' : '🔊';
+  volIcon.textContent = val <= 5 ? '🔇' : val < 30 ? '🔈' : val < 60 ? '🔉' : '🔊';
 });
 
 volIcon.addEventListener('click', () => {
-  if (parseInt(volSlider.value) <= 5) {
+  if (parseInt(volSlider.value, 10) <= 5) {
     volSlider.value = '70';
     audio.volume = 0.70;
     volPct.textContent = '70%';
@@ -1130,19 +1336,7 @@ volIcon.addEventListener('click', () => {
   }
 });
 
-// ====== Fade In on Scroll ======
-const fadeElements = document.querySelectorAll('.fade-in');
-const observer = new IntersectionObserver((entries) => {
-  for (let entry of entries) {
-    if (entry.isIntersecting) entry.target.classList.add('visible');
-  }
-}, { threshold: 0.1 });
-for (let el of fadeElements) observer.observe(el);
-setTimeout(() => {
-  for (let el of fadeElements) {
-    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
-  }
-}, 200);
+updateIndicator();
 </script>
 </body>
 </html>
